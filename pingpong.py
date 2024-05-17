@@ -1,11 +1,12 @@
 import turtle as t
 playerAscore=0
 playerBscore=0
-
+x = True
 
 #this space is to initialize quickly a few variables that can be useful later on :
-minimumSpeed=1.5
-maxPoints=5 #set the max point if you want some (if not remove the last if statement in the while true loop)
+minimumSpeed=5
+#set the max point if you want some (if not remove the last if statement in the while true loop)
+maxPoints=5 
 
 
 #creating the base of the game and the desired aesthetic :)
@@ -57,6 +58,9 @@ pen.penup()
 pen.hideturtle()
 pen.goto(0,260)
 pen.write("SCORE",align="center",font=('Arial',24,'normal'))
+pen.goto(0,240)
+pen.write("press 'k' to exit the game !",align="center",font=('Arial',14,'normal'))
+
 
 
 
@@ -90,16 +94,20 @@ def rightdown():
     y=y-90
     rightpaddle.sety(y)
 
+def leave():
+    global x
+    x = False
+
 #assign the keys to play to the corresponding function 
 window.listen()
 window.onkeypress(leftup,'e')
 window.onkeypress(leftdown,'d')
 window.onkeypress(rightup,'Up')
 window.onkeypress(rightdown,'Down')
+window.onkeypress(leave, 'k')
 
 
 #the while true will make the game run and give movement to the ball
-x = True
 while x == True:
     window.update()
 
@@ -128,7 +136,10 @@ while x == True:
         ballxdirection=minimumSpeed #it comes back to original speed (but different angle)
         playerAscore=playerAscore+1
         pen.clear()
+        pen.goto(0,260)
         pen.write("player A:{}    player B:{}".format(playerAscore,playerBscore),align='center',font=('Arial',24))
+        pen.goto(0,240)
+        pen.write("press 'k' to exit the game !",align="center",font=('Arial',14,'normal'))
 
 
     if ball.xcor()<-440:
@@ -136,7 +147,11 @@ while x == True:
         ballxdirection=-minimumSpeed # bc the ball comes back to the person who just lost a point 
         playerBscore=playerBscore+1
         pen.clear()
+        pen.goto(0,260)
         pen.write("player A:{}    player B:{}".format(playerAscore,playerBscore),align='center',font=('Arial',24))
+        pen.goto(0,240)
+        pen.write("press 'k' to exit the game !",align="center",font=('Arial',14,'normal'))
+
 
 
     #ajust the collisions with the paddle
@@ -162,8 +177,9 @@ while x == True:
 
 
 window.bye() # close the window (you could show who won tho)
-if playerAscore==maxPoints:
+if playerAscore>playerBscore:
     print("Player A won with " + str(maxPoints) + " against " + str(playerBscore) + "!")
-else:
+elif playerAscore<playerBscore:
     print("Player B won with " + str(maxPoints) + " against " + str(playerAscore) + "!")
-    
+else:
+    print("Tied!")
